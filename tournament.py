@@ -10,6 +10,15 @@ def connect():
     """Connect to the PostgreSQL database.  Returns a database connection."""
     return psycopg2.connect("dbname=tournament")
 
+def addTournament(t_name, t_date):
+    """Extra credit: support more than one tournament. If function is called,"""
+    """user can supply a name for the tournament and date the tournament is held."""
+    con = connect()
+    cur = con.cursor()
+    add_tourney = ("INSERT INTO tournaments (t_name, t_date) VALUES (%s,%s);")
+    cur.execute(add_tourney, (t_name,t_date,))
+    con.commit()
+    con.close()
 
 def deleteMatches():
     """Remove all the match records from the database."""
@@ -52,21 +61,22 @@ def registerPlayer(name, tournament):
     con = connect()
     cur = con.cursor()
     player_name = bleach.clean(name, strip=True)
-    cur.execute("INSERT INTO participants (p_name) VALUES (%s) RETURNING p_id;", (player_name,))
+    """create participant detail record"""
+    create_partic = ("INSERT INTO participants (p_name) "
+                        "VALUES (%s) RETURNING p_id;")
+    cur.execute(create_partic, (player_name,))
     p_id = cur.fetchone()
     con.commit()
-    cur.execute("INSERT INTO rounds (t_id, player, round, winner) VALUES (%s,%s,%s,%s)", (tournament,p_id,0,0,))
+    """add player to rounds to associate with tournament """
+    """and round (function to be added)"""
+    add_to_rounds = ("INSERT INTO rounds (t_id, player, round, winner) "
+                    "VALUES (%s,%s,%s,%s);")
+    cur.execute(add_to_rounds, (tournament,p_id,0,0,))
     con.commit()
     con.close()
 
-
-
 def playerStandings():
-    """Returns a list of the players and their win records, sorted by wins.
-
-    The first entry in the list should be the player in first place, or a player
-    tied for first place if there is currently a tie.
-
+    """
     Returns:
       A list of tuples, each of which contains (id, name, wins, matches):
         id: the player's unique id (assigned by the database)
@@ -76,58 +86,63 @@ def playerStandings():
     """
     con = connect()
     cur = con.cursor()
-    cur.execute("SELECT r.player, p.p_name, coalesce(sum(cast(r.winner as int)),0) AS wins, coalesce(max(cast(r.round as int)),0) AS matches FROM rounds AS r RIGHT JOIN participants AS p ON r.player = p.p_id GROUP BY r.player, p.p_name ORDER BY wins DESC;")
+    """ Get the list of players and sort by number of wins """
+    """ Round column is for future tracking of rounds played. """
+    cur.execute("SELECT r.player, p.p_name, "
+                "coalesce(sum(cast(r.winner as int)),0) AS wins, "
+                "coalesce(max(cast(r.round as int)),0) AS matches FROM rounds "
+                "AS r RIGHT JOIN participants AS p ON r.player = p.p_id "
+                "GROUP BY r.player, p.p_name ORDER BY wins DESC;")
     standings = cur.fetchall()
     con.commit()
     con.close()
     return standings
 
-"""    standings = ({str(row[0]), str(row[1]), str(row[2]), str(r[3])},)"""
-
-
-
 def reportMatch(winner, loser, draw):
     """Records the outcome of a single match between two players.
 
-Need to update rounds table. update the record
-by p_id, either winner or loser. update player field with winner or loser.
-if it's the winner, put 1 into winner field. if it's the loser,
-put 0 into winner field. Also need to insert round into round field.
-get max of round and add 1 and include in update
-
-"""
+    """
+    """Attempted extra credit by including input for draw where both """
+    """players are awarded a point for draw. Draw is set to True or False. """
     con = connect()
     cur = con.cursor()
-    cur.execute("SELECT max(round) as curr_matches FROM rounds WHERE player = (%s)", (winner,))
+    winner = bleach.clean(winner, strip=True)
+    """get the highest number of rounds for the winner for later use"""
+    get_winner_rounds = ("SELECT max(round) as curr_matches FROM rounds "
+                            "WHERE player = (%s);")
+    cur.execute(get_winner_rounds, (winner,))
+    new_matches_winner = int(cur.fetchone()[0]) + 1
+    """update query to be executed later"""
+    set_winner = ("UPDATE rounds SET winner = (%s), round = (%s) "
+                "WHERE player = (%s);")
+    loser = bleach.clean(loser, strip=True)
+    """get the highest number of rounds for the loser for later use."""
+    get_loser_rounds = ("SELECT max(round) as curr_matches FROM rounds "
+                        "WHERE player = (%s);")
+    cur.execute(get_loser_rounds, (loser,))
+    new_matches_loser = int(cur.fetchone()[0]) + 1
+    """update query to be executed later"""
+    set_loser = ("UPDATE rounds SET winner = (%s), round = (%s) "
+            "WHERE player = (%s);")
+    """If draw is set to True, both players are flagged as 1 (winner)"""
     if draw:
-        curr_matches = cur.fetchone()
-        new_matches = int(curr_matches[0]) + 1
-        winner = bleach.clean(winner, strip=True)
-        cur.execute("UPDATE rounds SET winner = (%s), round = (%s) WHERE player = (%s)", (1,new_matches,winner,))
-        cur.execute("SELECT max(round) as curr_matches FROM rounds WHERE player = (%s)", (loser,))
-        curr_matches = cur.fetchone()
-        new_matches = int(curr_matches[0]) + 1
-        loser = bleach.clean(loser, strip=True)
-        cur.execute("UPDATE rounds SET winner = (%s), round = (%s) WHERE player = (%s)", (1,new_matches,loser,))
+        """update rounds table with winner data"""
+        cur.execute(set_winner, (1,new_matches_winner,winner,))
+        """update rounds table with loser data"""
+        cur.execute(set_loser, (1,new_matches_loser,loser,))
+        """otherwise, the winner is flagged as 1 and loser flagged as 0"""
     else:
-        curr_matches = cur.fetchone()
-        new_matches = int(curr_matches[0]) + 1
-        winner = bleach.clean(winner, strip=True)
-        cur.execute("UPDATE rounds SET winner = (%s), round = (%s) WHERE player = (%s)", (1,new_matches,winner,))
-        cur.execute("SELECT max(round) as curr_matches FROM rounds WHERE player = (%s)", (loser,))
-        curr_matches = cur.fetchone()
-        new_matches = int(curr_matches[0]) + 1
-        loser = bleach.clean(loser, strip=True)
-        cur.execute("UPDATE rounds SET winner = (%s), round = (%s) WHERE player = (%s)", (0,new_matches,loser,))
+        """get the highest number of rounds for the winner for later use"""
+        cur.execute(set_winner, (1,new_matches_winner,winner,))
+        cur.execute(set_loser, (0,new_matches_loser,loser,))
     con.commit()
     con.close()
 
-"""
+    """
     Args:
       winner:  the id number of the player who won
       loser:  the id number of the player who lost
     """
-
 
 def swissPairings():
     """Returns a list of pairs of players for the next round of a match.
@@ -137,19 +152,25 @@ def swissPairings():
     player with an equal or nearly-equal win record, that is, a player adjacent
     to him or her in the standings."""
 
+    """TODO: only pair if pair does not match in any previous games."""
+    """use player and pair_id.  so where combination of p_id and """
+    """pair_id of each person in proposed pair has not been seen before. """
+    """NOTE TO SELF: see saved_code.txt for stub"""
+
     con = connect()
     cur = con.cursor()
-    cur.execute("SELECT id, name FROM (SELECT r.player as id, p.p_name as name, coalesce(sum(cast(r.winner as int)),0) AS wins, coalesce(max(cast(r.round as int)),0) AS matches FROM rounds AS r RIGHT JOIN participants AS p ON r.player = p.p_id GROUP BY r.player, p.p_name ORDER BY wins DESC) AS results;")
+    cur.execute("SELECT id, name FROM (SELECT r.player as id, p.p_name as name, "
+                "coalesce(sum(cast(r.winner as int)),0) AS wins, "
+                "coalesce(max(cast(r.round as int)),0) AS matches "
+                "FROM rounds AS r RIGHT JOIN participants AS p "
+                "ON r.player = p.p_id GROUP BY r.player, p.p_name "
+                "ORDER BY wins DESC) AS results;")
     standings = cur.fetchall()
-    cur.execute("SELECT coalesce(max(cast(pair_id as int)),0) AS pair_id FROM rounds;")
-    max_pair_id = cur.fetchone()
-    new_pair_id = int(max_pair_id[0]) + 1
     pairings_tuple = ()
     pairings_list = []
     pair = 0
-    """only pair if pair does not match in any previous games. use p_id and pair_id.  so where combination of p_id and
-        pair_id of each person in proposed pair has not been seen before."""
     while pair < len(standings):
+        """create the tuple and append to the list"""
         pairings_tuple = ({standings[pair] + standings[pair + 1]})
         pairings_list.extend(pairings_tuple)
         pair = pair + 2
@@ -163,5 +184,3 @@ def swissPairings():
         id2: the second player's unique id
         name2: the second player's name
     """
-
-
