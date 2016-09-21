@@ -74,6 +74,6 @@ Refer to [this page](https://udacity.atlassian.net/wiki/display/BENDH/Vagrant+VM
 **To customize the files**
 Feel free to modify your copy of *tournament.py* and run *tournament_test.py* to see how this affects the outcomes of the test. You can use print statements within *tournament.py* to troubleshoot your code.
 
-Stubs and test file were provided by [Udacity](http://www.Udacity.com). Additional instruction on Back End Development is available by signing up for a class on their site. No code was directly copied and pasted, but resources such as [Stack Overflow[(http://www.stackoverflow.com) and were used for guidance. Additional enhancements by Marija Robinson.
+Stubs and test file were provided by [Udacity](http://www.Udacity.com). Additional instruction on Back End Development is available by signing up for a class on their site. No code was directly copied and pasted, but resources such as [Stack Overflow](http://www.stackoverflow.com) and were used for guidance. Additional enhancements by Marija Robinson.
 
 I welcome any feedback on this project at marija@springmail.com.
