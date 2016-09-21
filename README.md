@@ -4,14 +4,18 @@
 The Tournament Results Database was developed part of Udacity's Full Stack Developer Nanodegree. It contains the backend code for a [Swiss-System Tournament](https://en.wikipedia.org/wiki/Swiss-system_tournament). The purpose of this project was to develop a database and functions that would pass all tests when run using the *tournament_test.py* file. There is no end user interface (UI) for the software for entering data or generating reports.
 
 ##Table of Contents
+ * [Functionality](#functionality)
+ * [Structure Overview](#structure-overview)
+ * [Technologies](#technologies)
+ * [Folders & Files](#folders-files)
+ * [Using the Software](#using-software)
 
 
-
-##Functionality
+##Functionality <a id="functionality"></a>
 ------------------------
 The *Tournament Results Database* contains functionality for adding tournaments, participants, and match data (rounds). Match data contains information about who is matched with whom and the outcome of the match. There are functions for querying the data for comparison and output. Functions are commented as to their purpose along with the code within the *tournament.py* file.
 
-##Structure Overview
+##Structure Overview <a id="structure-overview"></a>
 ------------------------
 
 | Table         | Description                           | Key(s)                           |
@@ -20,7 +24,7 @@ The *Tournament Results Database* contains functionality for adding tournaments,
 | participants  | Contains participant name and hometown| p_id                             |
 | rounds        | Data for registration & matches       | t_id (foreign), player (foreign) |
 
-##Technologies
+##Technologies <a id="technologies"></a>
 ------------------------
 
 | Tool Used  | Purpose                                   | Notes                                       | About         |
@@ -34,7 +38,7 @@ The *Tournament Results Database* contains functionality for adding tournaments,
 | psql       | allows interaction with the PostgreSQL db | Run commands through Git Bash               | [More info](https://www.postgresql.org/about/) |
 | Python     | language used to program functions        | Python files detailed below                 | [More info](https://www.python.org/about/) |
 
-##Folders & Files
+##Folders & Files <a id="folders-files"></a>
 ------------------------
 | File               | Purpose                                | Notes                                       |
 | ------------------ | -------------------------------------- | ------------------------------------------- |
@@ -48,7 +52,7 @@ The *Tournament Results Database* contains functionality for adding tournaments,
 | psycopg2          | API for PostgreSQL db use                |
 | bleach            | used to clean input of malicious scripts |
 
-##Using the Software
+##Using the Software <a id="using-software"></a>
 **To run the site**, place all files in the same folder with the same structure provided. Create a new application on the GAE Cloud Platform. Rename the application from animal stories to your GAE application name in the **app.yaml** file. Use desktop GAE to Add the application and run locally or deploy. Please see GAE documentation for further information.
 
 **To customize the files**, you can open the **base.html** file in your favorite text editor and make changes as desired. You can review the references to bootstrap using the bootstrap.css file, but good practice is to make modifications/additions in a separate css file (in this case, you can change the style.css file). Save the files and refresh the site to see your new web page.
