@@ -15,7 +15,7 @@ The *Tournament Results Database* contains functionality for adding tournaments,
 ------------------------
 
 | Table         | Description                           | Key(s)                           |
-| ------------- |:-------------------------------------:| --------------------------------:|
+| ------------- | ------------------------------------- | -------------------------------- |
 | tournaments   | Supports multiple tournaments         | t_id                             |
 | participants  | Contains participant name and hometown| p_id                             |
 | rounds        | Data for registration & matches       | t_id (foreign), player (foreign) |
@@ -24,7 +24,7 @@ The *Tournament Results Database* contains functionality for adding tournaments,
 ------------------------
 
 | Tool Used  | Purpose                                   | Notes                                       | About         |
-| ---------- |:-----------------------------------------:|--------------------------------------------:| --------------:|
+| ---------- | ----------------------------------------- | ------------------------------------------- | ------------- |
 | Windows OS | developer platform                        | Virtual Machine (VM) used to simulate Linux | [More info](https://www.virtualbox.org/wiki/VirtualBox) |
 | VirtualBox | software to run virtual machine           | Configured to run Linux server              | [More info](https://www.virtualbox.org/wiki/VirtualBox) |
 | Vagrant    | software to configure/manage VM           | Shares files between host computer & VM     | [More info](https://www.vagrantup.com/about.html) |
@@ -37,23 +37,18 @@ The *Tournament Results Database* contains functionality for adding tournaments,
 ##Folders & Files
 ------------------------
 | File               | Purpose                                | Notes                                       |
-| ------------------ |:--------------------------------------:|--------------------------------------------:|
+| ------------------ | -------------------------------------- | ------------------------------------------- |
 | tournament.sql     | db schema                              | May be used to create schema with psql (see below) |
 | tournament.py      | core code for application              | Functions are accessed by running *tournament_test.py* |
 | tournament_test.py | file to test *tournament.py* functions | Provided by [Udacity](http://www.udacity.com) |
 
 ##Libraries & Modules
-* os
-* re
-* webapp2
-* jinja2
-* random
-* string
-* hashlib
-* time
-* db (from GAE)
+| Library or Module | Purpose                                  |
+| ----------------- | ---------------------------------------- |
+| psycopg2          | API for PostgreSQL db use                |
+| bleach            | used to clean input of malicious scripts |
 
-##Using the Site
+##Using the Software
 **To run the site**, place all files in the same folder with the same structure provided. Create a new application on the GAE Cloud Platform. Rename the application from animal stories to your GAE application name in the **app.yaml** file. Use desktop GAE to Add the application and run locally or deploy. Please see GAE documentation for further information.
 
 **To customize the files**, you can open the **base.html** file in your favorite text editor and make changes as desired. You can review the references to bootstrap using the bootstrap.css file, but good practice is to make modifications/additions in a separate css file (in this case, you can change the style.css file). Save the files and refresh the site to see your new web page.
