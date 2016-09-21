@@ -6,19 +6,23 @@
 import psycopg2
 import bleach
 
+
 def connect():
     """Connect to the PostgreSQL database.  Returns a database connection."""
     return psycopg2.connect("dbname=tournament")
 
+
 def addTournament(t_name, t_date):
-    """Extra credit: support more than one tournament. If function is called,"""
-    """user can supply a name for the tournament and date the tournament is held."""
+    """Extra credit: support more than one tournament. If function is """
+    """called, user can supply a name for the tournament and date the """
+    """tournament is held."""
     con = connect()
     cur = con.cursor()
     add_tourney = ("INSERT INTO tournaments (t_name, t_date) VALUES (%s,%s);")
-    cur.execute(add_tourney, (t_name,t_date,))
+    cur.execute(add_tourney, (t_name, t_date, ))
     con.commit()
     con.close()
+
 
 def deleteMatches():
     """Remove all the match records from the database."""
@@ -63,17 +67,18 @@ def registerPlayer(name, tournament):
     player_name = bleach.clean(name, strip=True)
     """create participant detail record"""
     create_partic = ("INSERT INTO participants (p_name) "
-                        "VALUES (%s) RETURNING p_id;")
-    cur.execute(create_partic, (player_name,))
+                     "VALUES (%s) RETURNING p_id;")
+    cur.execute(create_partic, (player_name, ))
     p_id = cur.fetchone()
     con.commit()
     """add player to rounds to associate with tournament """
     """and round (function to be added)"""
     add_to_rounds = ("INSERT INTO rounds (t_id, player, round, winner) "
-                    "VALUES (%s,%s,%s,%s);")
-    cur.execute(add_to_rounds, (tournament,p_id,0,0,))
+                     "VALUES (%s,%s,%s,%s);")
+    cur.execute(add_to_rounds, (tournament, p_id, 0, 0, ))
     con.commit()
     con.close()
+
 
 def playerStandings():
     """
@@ -98,6 +103,7 @@ def playerStandings():
     con.close()
     return standings
 
+
 def reportMatch(winner, loser, draw):
     """Records the outcome of a single match between two players.
 
@@ -109,32 +115,32 @@ def reportMatch(winner, loser, draw):
     winner = bleach.clean(winner, strip=True)
     """get the highest number of rounds for the winner for later use"""
     get_winner_rounds = ("SELECT max(round) as curr_matches FROM rounds "
-                            "WHERE player = (%s);")
-    cur.execute(get_winner_rounds, (winner,))
+                         "WHERE player = (%s);")
+    cur.execute(get_winner_rounds, (winner, ))
     new_matches_winner = int(cur.fetchone()[0]) + 1
     """update query to be executed later"""
     set_winner = ("UPDATE rounds SET winner = (%s), round = (%s) "
-                "WHERE player = (%s);")
+                  "WHERE player = (%s);")
     loser = bleach.clean(loser, strip=True)
     """get the highest number of rounds for the loser for later use."""
     get_loser_rounds = ("SELECT max(round) as curr_matches FROM rounds "
                         "WHERE player = (%s);")
-    cur.execute(get_loser_rounds, (loser,))
+    cur.execute(get_loser_rounds, (loser, ))
     new_matches_loser = int(cur.fetchone()[0]) + 1
     """update query to be executed later"""
     set_loser = ("UPDATE rounds SET winner = (%s), round = (%s) "
-            "WHERE player = (%s);")
+                 "WHERE player = (%s);")
     """If draw is set to True, both players are flagged as 1 (winner)"""
     if draw:
         """update rounds table with winner data"""
-        cur.execute(set_winner, (1,new_matches_winner,winner,))
+        cur.execute(set_winner, (1, new_matches_winner, winner, ))
         """update rounds table with loser data"""
-        cur.execute(set_loser, (1,new_matches_loser,loser,))
+        cur.execute(set_loser, (1, new_matches_loser, loser, ))
         """otherwise, the winner is flagged as 1 and loser flagged as 0"""
     else:
         """get the highest number of rounds for the winner for later use"""
-        cur.execute(set_winner, (1,new_matches_winner,winner,))
-        cur.execute(set_loser, (0,new_matches_loser,loser,))
+        cur.execute(set_winner, (1, new_matches_winner, winner, ))
+        cur.execute(set_loser, (0, new_matches_loser, loser, ))
     con.commit()
     con.close()
 
@@ -143,6 +149,7 @@ def reportMatch(winner, loser, draw):
       winner:  the id number of the player who won
       loser:  the id number of the player who lost
     """
+
 
 def swissPairings():
     """Returns a list of pairs of players for the next round of a match.
@@ -159,8 +166,8 @@ def swissPairings():
 
     con = connect()
     cur = con.cursor()
-    cur.execute("SELECT id, name FROM (SELECT r.player as id, p.p_name as name, "
-                "coalesce(sum(cast(r.winner as int)),0) AS wins, "
+    cur.execute("SELECT id, name FROM (SELECT r.player as id, p.p_name "
+                "as name, coalesce(sum(cast(r.winner as int)),0) AS wins, "
                 "coalesce(max(cast(r.round as int)),0) AS matches "
                 "FROM rounds AS r RIGHT JOIN participants AS p "
                 "ON r.player = p.p_id GROUP BY r.player, p.p_name "

@@ -23,6 +23,7 @@ def testCount():
     if c != 0:
         raise ValueError("After deletion, countPlayers should return zero.")
     print "1. countPlayers() returns 0 after initial deletePlayers() execution."
+    addTournament("Midwest Open", "12/12/2015")
     registerPlayer("Chandra Nalaar", 1)
     c = countPlayers()
     if c != 1:
@@ -122,7 +123,7 @@ def testPairings():
     pairings = swissPairings()
     if len(pairings) != 4:
         raise ValueError(
-            "Your function returns: %s" % str(pairings) +
+            "first time it runs: Your function returns: %s" % str(pairings) +
             "For eight players, swissPairings should return 4 pairs. Got {pairs}".format(pairs=len(pairings)))
     reportMatch(id1, id2, False)
     reportMatch(id3, id4, False)
@@ -131,7 +132,7 @@ def testPairings():
     pairings = swissPairings()
     if len(pairings) != 4:
         raise ValueError(
-            "Your function returns: %s" % str(pairings) +
+            "second time it runs: Your function returns: %s" % str(pairings) +
             "For eight players, swissPairings should return 4 pairs. Got {pairs}".format(pairs=len(pairings)))
     [(pid1, pname1, pid2, pname2), (pid3, pname3, pid4, pname4), (pid5, pname5, pid6, pname6), (pid7, pname7, pid8, pname8)] = pairings
     possible_pairs = set([frozenset([id1, id3]), frozenset([id1, id5]),

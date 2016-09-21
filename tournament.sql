@@ -6,6 +6,9 @@
 -- You can write comments in this file by starting them with two dashes, like
 -- these lines here.
 
+DROP TABLE IF EXISTS tournaments CASCADE;
+DROP TABLE IF EXISTS participants CASCADE;
+DROP TABLE IF EXISTS rounds;
 DROP database IF EXISTS tournament;
 
 CREATE database tournament;
@@ -17,3 +20,4 @@ CREATE TABLE participants (p_id serial PRIMARY KEY, p_name varchar(100), p_homet
 CREATE TABLE rounds (round integer, t_id integer
     references tournaments (t_id), pair_id integer, player integer
     references participants (p_id), winner integer);
+
