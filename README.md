@@ -1,72 +1,46 @@
 #Tournament Results Database
 ###(In fullfillment of Udacity's Full Stack Developer Program)
 
-The Tournament Results Database was developed part of Udacity's Full Stack Developer Nanodegree. It contains the backend code for a [https://en.wikipedia.org/wiki/Swiss-system_tournament](Swiss-System Tournament). The purpose of this project was to develop a database and functions that would pass all tests when run using the *tournament_test.py* file.
+The Tournament Results Database was developed part of Udacity's Full Stack Developer Nanodegree. It contains the backend code for a [Swiss-System Tournament](https://en.wikipedia.org/wiki/Swiss-system_tournament). The purpose of this project was to develop a database and functions that would pass all tests when run using the *tournament_test.py* file. There is no end user interface (UI) for the software for entering data or generating reports.
 
-#Features Overview
+##Table of Contents
+
+
+
+##Functionality
 ------------------------
-The database contains four entites, tournaments, participants, and rounds.
+The *Tournament Results Database* contains functionality for adding tournaments, participants, and match data (rounds). Match data contains information about who is matched with whom and the outcome of the match. There are functions for querying the data for comparison and output. Functions are commented as to their purpose along with the code within the *tournament.py* file.
 
-| Tables        | Are           | Cool  |
-| ------------- |:-------------:| -----:|
-| col 3 is      | right-aligned | $1600 |
-| col 2 is      | centered      |   $12 |
-| zebra stripes | are neat      |    $1 |
+##Structure Overview
+------------------------
+
+| Table         | Description                           | Key(s)                           |
+| ------------- |:-------------------------------------:| --------------------------------:|
+| tournaments   | Supports multiple tournaments         | t_id                             |
+| participants  | Contains participant name and hometown| p_id                             |
+| rounds        | Data for registration & matches       | t_id (foreign), player (foreign) |
 
 ##Technologies
 ------------------------
-A PostgreSQL database is used to store players and the records of matches. It is developed on Virtual Box with Vagrant File (Ubuntu OS + PostgreSQL DB+ psql) provided by Udacity.
 
-This site uses a PostgreSQL database for persistant data storage and uses Virtual Box with Vagrant Virtual Machine, Python, JavaScript, and bootstrap framework. Libraries used are described below Folders and Files section.
+| Tool Used  | Purpose                                   | Notes                                       | About         |
+| ---------- |:-----------------------------------------:|--------------------------------------------:| --------------:|
+| Windows OS | developer platform                        | Virtual Machine (VM) used to simulate Linux | [More info](https://www.virtualbox.org/wiki/VirtualBox) |
+| VirtualBox | software to run virtual machine           | Configured to run Linux server              | [More info](https://www.virtualbox.org/wiki/VirtualBox) |
+| Vagrant    | software to configure/manage VM           | Shares files between host computer & VM     | [More info](https://www.vagrantup.com/about.html) |
+| GitHub     | provide configuration instructions for VM | Fork & clone Udacity repo (link below)      | [More info](https://en.wikipedia.org/wiki/GitHub) |
+| Git Bash   | run commands from VM                      | Provides Unix-Style terminal                | [More info](https://en.wikipedia.org/wiki/Bash_(Unix_shell)) |
+| PostgreSQL | database for persistant data storage      | Runs on Virtual Machine (VM)                | [More info](https://www.postgresql.org/about/) |
+| psql       | allows interaction with the PostgreSQL db | Run commands through Git Bash               | [More info](https://www.postgresql.org/about/) |
+| Python     | language used to program functions        | Python files detailed below                 | [More info](https://www.python.org/about/) |
 
 ##Folders & Files
 ------------------------
-* app.yaml
-* blog.py
-* index.yaml
-* templates/base.html
-* templates/editcomment.html
-* templates/front.html
-* templates/login.html
-* templates/newpost.html
-* templates/permalink.html
-* templates/post.html
-* templates/signup.html
-* templates/welcome.html
-* css/bootstrap.css
-* css/style.css
-* css/bootstrap.min.css
-* images (folder)
-
-**blog.py** is the main python file that contains the code for running the app.
-
-**app.yaml and index.yaml** are used by GAE. Please refer to GAE documention regarding these files.
-
-**templates/base.html** contains the base template for the site.
-
-**templates/front.html** displays the main site page. The post.html is displayed within this page.
-
-**templates/permalink.html** displays the individual post. Post.html is also used within this page. This page contains commenting functionality. It is also displayed after a new post is created.
-
-**templates/post.html** is contained within the front and permalink html files and displays the details of an individual post.
-
-**templates/newpost.html** is the form that allows for creating a new animal story. It is also used when a user edits their own post.
-
-**templates/editcomment.html** is a form that is used when a user edits their own comment.
-
-**templates/login.html** is for an existing user to login.
-
-**templates/signup.html** is for a new user to create an account.
-
-**templates/welcome.html** displays a welcome message to the new or existing user.
-
-**css/bootstrap.css** contains the framework style code. This file is not directly referenced by the website. It is the full version of bootstrip.min.css for development use and has not been modified. Final version of website will not include this file.
-
-**css/bootstrap.min.css** contains the minified version of bootstrap.css and is not modified from it's original version. Any style changes are in the style.css file.
-
-**css/style.css** contains the modifications and additions to the style code.
-
-**images** folder contains the images required for the site.
+| File               | Purpose                                | Notes                                       |
+| ------------------ |:--------------------------------------:|--------------------------------------------:|
+| tournament.sql     | db schema                              | May be used to create schema with psql (see below) |
+| tournament.py      | core code for application              | Functions are accessed by running *tournament_test.py* |
+| tournament_test.py | file to test *tournament.py* functions | Provided by [Udacity](http://www.udacity.com) |
 
 ##Libraries & Modules
 * os
