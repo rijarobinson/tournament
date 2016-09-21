@@ -27,7 +27,7 @@ The *Tournament Results Database* contains functionality for adding tournaments,
 
 | Tool Used  | Purpose                                   | Notes                                       | About         |
 | ---------- | ----------------------------------------- | ------------------------------------------- | ------------- |
-| Windows OS | developer platform                        | Virtual Machine (VM) used to simulate Linux | [More info](https://www.virtualbox.org/wiki/VirtualBox) |
+| Windows OS | developer platform                        | Virtual Machine (VM) used to simulate Linux | [More info](http://www.microsoft.com) |
 | VirtualBox | software to run virtual machine           | Configured to run Linux server              | [More info](https://www.virtualbox.org/wiki/VirtualBox) |
 | Vagrant    | software to configure/manage VM           | Shares files between host computer & VM     | [More info](https://www.vagrantup.com/about.html) |
 | GitHub     | provide configuration instructions for VM | Fork & clone Udacity repo (link below)      | [More info](https://en.wikipedia.org/wiki/GitHub) |
