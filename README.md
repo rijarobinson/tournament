@@ -10,8 +10,8 @@ The Tournament Results Database was developed part of Udacity's Full Stack Devel
  * [Folders & Files](#folders-files)
  * [Using the Software](#using-software)
 
-
-##Functionality <a id="functionality"></a>
+<a id="functionality"></a>
+##Functionality
 ------------------------
 The *Tournament Results Database* contains functionality for adding tournaments, participants, and match data (rounds). Match data contains information about who is matched with whom and the outcome of the match. There are functions for querying the data for comparison and output. Functions are commented as to their purpose along with the code within the *tournament.py* file.
 
