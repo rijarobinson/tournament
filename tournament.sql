@@ -9,9 +9,6 @@
 DROP TABLE IF EXISTS tournaments CASCADE;
 DROP TABLE IF EXISTS participants CASCADE;
 DROP TABLE IF EXISTS rounds;
-DROP database IF EXISTS tournament;
-
-CREATE database tournament;
 
 CREATE TABLE tournaments (t_id serial PRIMARY KEY, t_name text, t_date date);
 

@@ -59,14 +59,15 @@ The *Tournament Results Database* contains functionality for adding tournaments,
 4.  Fetch the [GitHub repository](https://github.com/udacity/fullstack-nanodegree-vm) created for the project by first Forking, and then getting the URL from GitHub for cloning (use HTTPS).
 5.  Open **Git Bash** and cd to the desired directory for the application.
 6.  Run "git clone PASTE_CLONED_PATH_FROM_GITHUB_HERE fullstack". This creates a directory called "fullstack" within your selected folder as well as the vagrant configuration.
-7.  Replace the stock *tournament.py* and *tournament.sql* files with the two files in the "vagrant/tournament" folder of the same name from this repository. (The files provided by Udacity are blank, pre-project completion files.) These files may reside directly in the vagrant directory, depending upon how you've set it up.
+7.  Replace the stock *tournament.py* and *tournament.sql* files with the two files in the "vagrant/tournament" folder of the same name from this repository. (The files provided by Udacity are blank, pre-project completion files.)
 8.  Launch the Virtual Machine by running "vagrant up" in the vagrant directory ("vagrant halt" stops the VM).
 9.  Run "vagrant ssh" to log into the virtual machine ("exit" will log you off).
 10.  Run "cd /vagrant/tournament" if necessary to switch to the tournament directory.
 11.  Run "psql" to run the querying software.
-12.  At "vagrant=>", run "\i tournament.sql" to create the database and tables.
-13.  You can connect to the tournament database by running "\c tournament". If you would like to see a list of the tables, run "\dt". For other commands you can use in psql, check [here](http://postgresguide.com/utilities/psql.html).
-14.  Quit psql with "\q" and run "tournament_test.py" to see the tests run on the *tournament.py* file.
+12.  At "vagrant=>", type "CREATE database tournament;" and press enter.
+13.  You can now connect to the tournament database by running "\c tournament".
+14.  At "tournament=>", run "\i tournament.sql" to create the tables. If you would like to see a list of the tables, run "\dt". For other commands you can use in psql, check [here](http://postgresguide.com/utilities/psql.html).
+15.  Quit psql with "\q" and run "tournament_test.py" to see the tests run on the *tournament.py* file.
 
 Refer to [this page](https://udacity.atlassian.net/wiki/display/BENDH/Vagrant+VM+Installation) from Udacity for additional install details and screen shots.
 
@@ -74,7 +75,5 @@ Refer to [this page](https://udacity.atlassian.net/wiki/display/BENDH/Vagrant+VM
 Feel free to modify your copy of *tournament.py* and run *tournament_test.py* to see how this affects the outcomes of the test. You can use print statements within *tournament.py* to troubleshoot your code.
 
 Stubs and test file were provided by [Udacity](http://www.Udacity.com). Additional instruction on Back End Development is available by signing up for a class on their site. Additional enhancements by Marija Robinson.
-
-The implemented project can be accessed at [http://animal-stories.appspot.com/blog](animal-stories.appspot.com).
 
 I welcome any feedback on this project at marija@springmail.com.
