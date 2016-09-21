@@ -52,6 +52,7 @@ The *Tournament Results Database* contains functionality for adding tournaments,
 <a id="using-software"></a>
 ##Using the Software
 **To run the software**
+
 1.  Install [Git](https://git-scm.com/downloads) in order to use Git Bash Unix-Style terminal.
 2.  Install [VirtualBox](https://www.virtualbox.org/wiki/Downloads). No need for the extension pack or SDK. Do not launch after install.
 3.  Install [Vagrant](https://www.vagrantup.com/downloads.html).
