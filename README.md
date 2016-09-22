@@ -17,11 +17,13 @@ The *Tournament Results Database* contains functionality for adding tournaments,
 <a id="structure-overview"></a>
 ##Structure Overview
 
-| Table         | Description                           | Key(s)                           |
-| ------------- | ------------------------------------- | -------------------------------- |
-| tournaments   | Supports multiple tournaments         | t_id                             |
-| participants  | Contains participant name and hometown| p_id                             |
-| rounds        | Data for registration & matches       | t_id (foreign), player (foreign) |
+| Table/View       | Description                             | Key(s)                           |
+| ---------------- | --------------------------------------- | -------------------------------- |
+| tournaments (t)  | Supports multiple tournaments           | t_id                             |
+| participants (t) | Contains participant name and hometown  | p_id                             |
+| rounds (t)       | Data for registration & matches         | t_id (foreign), player (foreign) |
+| standings (v)    | Queries to get list of player standings | n/a                              |
+| roster (v)       | Queries to get list of players id/name  | n/a                              |
 <a id="technologies"></a>
 ##Technologies
 
@@ -64,9 +66,7 @@ The *Tournament Results Database* contains functionality for adding tournaments,
 9.  Run "vagrant ssh" to log into the virtual machine ("exit" will log you off).
 10.  Run "cd /vagrant/tournament" if necessary to switch to the tournament directory.
 11.  Run "psql" to run the querying software.
-12.  At "vagrant=>", type "CREATE database tournament;" and press enter.
-13.  You can now connect to the tournament database by running "\c tournament".
-14.  At "tournament=>", run "\i tournament.sql" to create the tables. If you would like to see a list of the tables, run "\dt". For other commands you can use in psql, check [here](http://postgresguide.com/utilities/psql.html).
+13.  At "vagrant=>", run "\i tournament.sql" to create the database, tables, and views and connect to the tournament database. If you would like to see a list of the tables, run "\dt". For other commands you can use in psql, check [here](http://postgresguide.com/utilities/psql.html).
 15.  Quit psql with "\q" and run "tournament_test.py" to see the tests run on the *tournament.py* file.
 
 Refer to [this page](https://udacity.atlassian.net/wiki/display/BENDH/Vagrant+VM+Installation) from Udacity for additional install details and screen shots.

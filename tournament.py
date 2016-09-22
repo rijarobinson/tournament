@@ -7,17 +7,22 @@ import psycopg2
 import bleach
 
 
-def connect():
+def connect(database_name="tournament"):
     """Connect to the PostgreSQL database.  Returns a database connection."""
-    return psycopg2.connect("dbname=tournament")
+    try:
+        con = psycopg2.connect("dbname={}".format(database_name))
+        cur = con.cursor()
+        return con, cur
+    except:
+        return("There was a problem connecting to the database. Please "
+               "contact your database administrator.")
 
 
 def addTournament(t_name, t_date):
     """Extra credit: support more than one tournament. If function is """
     """called, user can supply a name for the tournament and date the """
     """tournament is held."""
-    con = connect()
-    cur = con.cursor()
+    con, cur = connect()
     add_tourney = ("INSERT INTO tournaments (t_name, t_date) VALUES (%s,%s);")
     cur.execute(add_tourney, (t_name, t_date, ))
     con.commit()
@@ -26,8 +31,7 @@ def addTournament(t_name, t_date):
 
 def deleteMatches():
     """Remove all the match records from the database."""
-    con = connect()
-    cur = con.cursor()
+    con, cur = connect()
     cur.execute("DELETE FROM rounds;")
     con.commit()
     con.close()
@@ -35,8 +39,7 @@ def deleteMatches():
 
 def deletePlayers():
     """Remove all the player records from the database."""
-    con = connect()
-    cur = con.cursor()
+    con, cur = connect()
     cur.execute("DELETE FROM rounds;")
     cur.execute("DELETE FROM participants;")
     con.commit()
@@ -45,8 +48,7 @@ def deletePlayers():
 
 def countPlayers():
     """Returns the number of players currently registered."""
-    con = connect()
-    cur = con.cursor()
+    con, cur = connect()
     num_partic = cur.execute("SELECT count(*) as num FROM participants;")
     counted = cur.fetchone()[0]
     con.close()
@@ -62,8 +64,7 @@ def registerPlayer(name, tournament):
     Args:
       name: the player's full name (need not be unique).
     """
-    con = connect()
-    cur = con.cursor()
+    con, cur = connect()
     player_name = bleach.clean(name, strip=True)
     """create participant detail record"""
     create_partic = ("INSERT INTO participants (p_name) "
@@ -79,7 +80,6 @@ def registerPlayer(name, tournament):
     con.commit()
     con.close()
 
-
 def playerStandings():
     """
     Returns:
@@ -89,15 +89,10 @@ def playerStandings():
         wins: the number of matches the player has won
         matches: the number of matches the player has played
     """
-    con = connect()
-    cur = con.cursor()
+    con, cur = connect()
     """ Get the list of players and sort by number of wins """
     """ Round column is for future tracking of rounds played. """
-    cur.execute("SELECT r.player, p.p_name, "
-                "coalesce(sum(cast(r.winner as int)),0) AS wins, "
-                "coalesce(max(cast(r.round as int)),0) AS matches FROM rounds "
-                "AS r RIGHT JOIN participants AS p ON r.player = p.p_id "
-                "GROUP BY r.player, p.p_name ORDER BY wins DESC;")
+    cur.execute("SELECT * FROM standings;")
     standings = cur.fetchall()
     con.commit()
     con.close()
@@ -110,8 +105,7 @@ def reportMatch(winner, loser, draw):
     """
     """Attempted extra credit by including input for draw where both """
     """players are awarded a point for draw. Draw is set to True or False. """
-    con = connect()
-    cur = con.cursor()
+    con, cur = connect()
     winner = bleach.clean(winner, strip=True)
     """get the highest number of rounds for the winner for later use"""
     get_winner_rounds = ("SELECT max(round) as curr_matches FROM rounds "
@@ -164,14 +158,8 @@ def swissPairings():
     """pair_id of each person in proposed pair has not been seen before. """
     """NOTE TO SELF: see saved_code.txt for stub"""
 
-    con = connect()
-    cur = con.cursor()
-    cur.execute("SELECT id, name FROM (SELECT r.player as id, p.p_name "
-                "as name, coalesce(sum(cast(r.winner as int)),0) AS wins, "
-                "coalesce(max(cast(r.round as int)),0) AS matches "
-                "FROM rounds AS r RIGHT JOIN participants AS p "
-                "ON r.player = p.p_id GROUP BY r.player, p.p_name "
-                "ORDER BY wins DESC) AS results;")
+    con, cur = connect()
+    cur.execute("SELECT * from roster;")
     standings = cur.fetchall()
     pairings_tuple = ()
     pairings_list = []
